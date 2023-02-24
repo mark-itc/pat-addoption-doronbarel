@@ -7,4 +7,4 @@ app.use(express.json());
 app.get('/', (req, res) => {
     console.log('im here')
 })
-app.listen(3000)
+app.listen(3001)
