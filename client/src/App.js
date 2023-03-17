@@ -21,15 +21,20 @@ const customStyles = {
 Modal.setAppElement('body');
 
 function App() {
-  let subtitle;
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   function openModal() {
     setIsOpen(true);
+    setIsSigningUp(false);
   }
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function switchIsSigningUp() {
+    setIsSigningUp(!isSigningUp);
   }
 
   const state = { authUser: null }
@@ -41,15 +46,34 @@ function App() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Login"
+        contentLabel={isSigningUp ? 'Signup' : 'Login'}
       >
-        <h2>Login</h2>
         <form>
-          Email
-          <input type="email" />
-          Password
-          <input type="password" />
-          <button>Login</button>
+          { isSigningUp ? (
+            <>
+              <h2>Signup</h2>
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" required/>
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" required/>
+            </>
+          ) : <h2>Login</h2> }
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required/>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required/>
+          { isSigningUp ? (
+            <>
+              <label for="repeatPassword">Repeat Password</label>
+              <input type="password" id="repeatPassword" name="repeatPassword" required/>
+              <button>Signup</button>
+            </>
+          ) : ( 
+            <>
+              <button>Login</button>
+            </>)
+          }
+          <p onClick={switchIsSigningUp}>Don't have an account? Click here to { isSigningUp ? 'log in' : 'sign up'}.</p>
         </form>
       </Modal>
       <div className="navbar">
@@ -67,12 +91,14 @@ function App() {
           )}
         </div>
       </div>
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/Search' element={<Search />} />
-        <Route path='/MyPets' element={<MyPets />} />
-        <Route path='/Profile' element={<Profile />} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path='/' element={<Homepage />} />
+          <Route path='/Search' element={<Search />} />
+          <Route path='/MyPets' element={<MyPets />} />
+          <Route path='/Profile' element={<Profile />} />
+        </Routes>
+      </div>
     </div>
   );
 }
